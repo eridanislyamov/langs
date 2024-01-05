@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Lang = require("../models/lang").Lang;
+var async = require("async");
 
 /* GET users listing. */
 router.get('/', (req, res, next) => {
@@ -8,23 +9,32 @@ router.get('/', (req, res, next) => {
 });
 
 
-router.get("/:nick", async (req, res, next) => {
+/* Меню + заполение страниц */
+router.get('/:nick', async function(req, res, next) {
     try {
-        const lang = await Lang.findOne({ nick: req.params.nick });
-        console.log(lang);
+        const [lang, langs] = await Promise.all([
+            Lang.findOne({ nick: req.params.nick }),
+            Lang.find({}, { _id: 0, title: 1, nick: 1 })
+        ]);
         if (!lang) {
-            throw new Error("Нет такого!");
+            throw new Error("Нет такого");
         }
-        res.render('lang', {
-            title: lang.title,
-            picture: lang.avatar,
-            desc: lang.desc
-        });
-    } 
+        renderCup(res, lang.title, lang.avatar, lang.desc, langs);
+    }
     catch (err) {
         next(err);
     }
 });
 
+// Страницы языков
+function renderCup(res, title, picture, desc, menu) {
+    console.log(menu);
+    res.render('lang', {
+        title: title,
+        picture: picture,
+        desc: desc,
+        menu: menu
+    });
+}
 
 module.exports = router;

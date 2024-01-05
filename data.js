@@ -16,6 +16,6 @@ var data = [{
     avatar: '/images/php.jpg',
     desc: 'PHP (рекурсивный акроним словосочетания PHP: Hypertext Preprocessor ) - это распространённый язык программирования общего назначения с открытым исходным кодом. PHP специально сконструирован для веб-разработок и его код может внедряться непосредственно в HTML.'
     }
-    ];
+];
 
-    module.exports.data = data;
+module.exports.data = data;
