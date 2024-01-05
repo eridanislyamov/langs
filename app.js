@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var bodyparser = require('body-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose') 
-mongoose.connect('mongodb://localhost/coffee')
+mongoose.connect('mongodb://localhost/langs')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
