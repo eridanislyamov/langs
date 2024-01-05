@@ -10,6 +10,6 @@ var lang = new Lang({
       nick: "pascal"
 })
 
-lang.save().then(() => {
-      console.log(lang.title)
+lang.save().then(function(err, lang, affected){
+    console.log(lang.title)
 })

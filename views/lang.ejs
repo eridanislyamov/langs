@@ -1,28 +1,5 @@
 <% layout('./layout/page.ejs') %>
 
-<!--Создание переходов между страницами-->
-<nav class="navbar navbar-expand-sm bg-light navbar-light"> <div class="container-fluid">
-    <ul class="navbar-nav">
-         <li class="nav-item">
-              <a class="nav-link" href="/">Main</a>
-         </li>
-         <li class="nav-item">
-            <a class="nav-link" href="/python">Python</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/javascript">Java Script</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/php">PHP</a>
-        </li>
-    </ul>
-    <ul class="navbar-nav navbar-right">
-     <li>
-          <a class="nav-link" href="">Войти</a>
-</li> </ul>
-     </div>
-</nav>
-
 <h1><%= title %></h1>
 <img src="<%= picture %>" alt="<%= title %>"/>
 <h4>Несколько слов о языке программирования <%= title %>: <%= desc %></h4>
