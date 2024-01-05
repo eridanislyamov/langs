@@ -10,7 +10,7 @@ async function run() {
         database.dropDatabase()
         database = client.db("langs");
         const langs = database.collection("langs");
-        const result = await langs.insertOne({name:"Pascal"}); 
+        const result = await langs.insertMany(data); 
         console.log(`${result} documents were inserted`);
     } 
     finally {
