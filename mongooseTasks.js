@@ -1,15 +1,15 @@
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
+var mongoose = require('mongoose') 
+mongoose.connect('mongodb://localhost/test1') 
 
-var schema = mongoose.Schema({ name: String })
-schema.methods.peculiarity = function(){ 
-    console.log(this.get('name') + ' - высокоуровневый язык программирования')
-}
+var Lang = require("./models/lang").Lang
 
-var Lang = mongoose.model('Lang', schema);
+var schema = mongoose.Schema({name: String})
 
-var language = new Lang({ name: 'Java' });
+var lang = new Lang({
+      title: "Pascal",
+      nick: "pascal"
+})
 
-language.save().then(() => {
-    language.peculiarity()
+lang.save().then(() => {
+      console.log(lang.title)
 })
