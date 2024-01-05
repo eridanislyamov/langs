@@ -6,3 +6,11 @@ body {
 a {
   color: #00B7FF;
 }
+
+img {
+  height: 256px;
+}
+
+h4 {
+  font-size: 24px;
+}
