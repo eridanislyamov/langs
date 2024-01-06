@@ -7,10 +7,7 @@ router.get('/', async (req, res, next) => {
   try {
     const menu = await Lang.find({}, { _id: 0, title: 1, nick: 1 });
     console.log(menu);
-    res.cookie('greeting', 'Hi!!!').render('index', { 
-      title:'Lang', 
-      menu: menu 
-    });
+    req.session.greeting = "Hi!!!";
     res.render('index', {
       title: 'Lang',
       menu: menu
