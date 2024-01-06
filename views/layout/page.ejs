@@ -11,11 +11,18 @@
             <li class="nav-item">
                 <a class="nav-link" href="/">Main</a>
            </li>
+            <% if(typeof nav == 'object' && nav){ nav.forEach(function(lang){%>
+              <li class="nav-item">
+                <a class="nav-link" href="/langs/<%=lang.nick%>"><%=lang.title%></a>
+              </li>
+            <% })} %>
+           <!--
             <% menu.forEach(function(lang){ %>
                 <li class="nav-item">
                     <a class="nav-link" href="/langs/<%=lang.nick%>"><%=lang.title%></a>
                 </li>
             <% }) %>
+              -->
         </ul>
         <ul class="navbar-nav navbar-right">
          <li>
