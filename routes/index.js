@@ -6,7 +6,8 @@ var User = require("./../models/user").User;
 /* GET login/registration page. */
 router.get('/logreg', function(req, res, next) {
   res.render('logreg', {
-    title: "Вход"
+    title: "Вход",
+    error: null
   });
 });
 
@@ -38,7 +39,7 @@ router.post('/logreg', async function(req, res, next) {
         req.session.user = user._id;
         res.redirect('/');
       } else {
-        res.render('logreg', { title: 'Вход', error: 'Неверный пароль' });
+        res.render('logreg', { title: 'Вход', error: 'Пароль не верный' });
       }
     } else {
       const newUser = new User({ username, password });
