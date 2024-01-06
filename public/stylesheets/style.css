@@ -14,3 +14,7 @@ img {
 h4 {
   font-size: 24px;
 }
+
+input.btn.btn-primary {
+  margin-top: 10px;
+}

@@ -2,6 +2,13 @@ var express = require('express');
 var router = express.Router();
 var Lang = require("../models/lang").Lang;
 
+/* GET login/registration page. */
+router.get('/logreg', function(req, res, next) {
+  res.render('logreg', {
+    title: "Вход"
+  });
+});
+
 /* GET home page. */
 router.get('/', async (req, res, next) => {
   try {
@@ -16,6 +23,6 @@ router.get('/', async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-});
+});  
 
 module.exports = router;
