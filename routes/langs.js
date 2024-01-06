@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Lang = require("../models/lang").Lang;
 var async = require("async");
+var checkAuth = require("./../middleware/checkAuth.js")
 
 /* GET users listing. */
 router.get('/', (req, res, next) => {
@@ -10,7 +11,7 @@ router.get('/', (req, res, next) => {
 
 
 /* Меню + заполение страниц */
-router.get('/:nick', async function(req, res, next) {
+router.get('/:nick', checkAuth, async function(req, res, next) {
     try {
         const [lang, langs] = await Promise.all([
             Lang.findOne({ nick: req.params.nick }),
