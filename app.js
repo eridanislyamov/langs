@@ -20,8 +20,6 @@ app.set('view engine', 'ejs');
 
 var MongoStore = require('connect-mongo');
 
-app.use(require("./middleware/createMenu.js"))
-
 app.use(session({
   secret: "langs", 
   cookie:{maxAge:60*1000},
@@ -40,6 +38,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(require("./middleware/createMenu.js"))
+app.use(require("./middleware/createUser.js"))
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

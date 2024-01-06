@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var Lang = require("../models/lang").Lang;
-var User = require("../models/user").User;
+var Lang = require("./../models/lang").Lang;
+var User = require("./../models/user").User;
 
 /* GET login/registration page. */
 router.get('/logreg', function(req, res, next) {
