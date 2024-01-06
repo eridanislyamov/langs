@@ -10,7 +10,8 @@ router.get('/', async (req, res, next) => {
     req.session.greeting = "Hi!!!";
     res.render('index', {
       title: 'Lang',
-      menu: menu
+      menu: menu,
+      counter: req.session.counter
     });
   } catch (err) {
     next(err);
