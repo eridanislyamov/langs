@@ -23,6 +23,12 @@ router.get('/', async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-});  
+});
+
+/* POST login/registration page. */
+router.post('/logreg', function(req, res, next) {
+  var username = req.body.username
+  var password = req.body.password
+});
 
 module.exports = router;
