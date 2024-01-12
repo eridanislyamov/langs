@@ -3,35 +3,32 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+//var mongoose = require('mongoose');
+//mongoose.connect('mongodb://localhost/langs');
 var session = require("express-session");
-var mongoose = require('mongoose') 
-mongoose.connect('mongodb://localhost/langs')
+var MySQLStore = require('express-mysql-session')(session); 
+var mysql2 = require('mysql2/promise');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var langsRouter = require('./routes/langs');
 
 var app = express();
+var options = {
+host : '127.0.0.1',
+port: '3306',
+user : 'root',
+password : 'Eridan',
+database: 'langs'
+};
+
+var connection = mysql2.createPool(options)
+var sessionStore = new MySQLStore(options, connection);
 
 // view engine setup
 app.engine('ejs',require('ejs-locals'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
-var MongoStore = require('connect-mongo');
-
-app.use(session({
-  secret: "langs", 
-  cookie:{maxAge:60*1000},
-  resave: true, 
-  saveUninitialized: true,
-  store: MongoStore.create({mongoUrl: 'mongodb://localhost/langs'})
-}));
-
-app.use(function(req,res,next){
-  req.session.counter = req.session.counter + 1 || 1;
-  next();
-})  
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -39,7 +36,36 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(require("./middleware/createMenu.js"))
+app.use(session({
+  secret: 'langs',
+  key: 'sid',
+  store: sessionStore,
+  resave: true,
+  saveUninitialized: true,
+  cookie: { path: '/',
+  httpOnly: true,
+  maxAge: 60*1000
+} }));
+
+var MySQLStore = require('express-mysql-session')(session);
+
+/*
+var MongoStore = require('connect-mongo');
+app.use(session({ 
+  secret: "langs", 
+  cookie: {maxAge: 60*1000},
+  resave: true, 
+  saveUninitialized: true,
+  store: MongoStore.create({mongoUrl: 'mongodb://localhost/langs'})
+}));
+*/
+
+app.use(function(req,res,next){
+  req.session.counter = req.session.counter +1 || 1
+  next()
+})
+
+app.use(require("./middleware/createMenu.js"));
 app.use(require("./middleware/createUser.js"))
 
 app.use('/', indexRouter);
@@ -57,9 +83,9 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
+// render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error', {title: "Error"});
 });
 
 module.exports = app;

@@ -5,9 +5,10 @@ var db = require('../mySQLConnect.js');
 var async = require("async");
 // var checkAuth = require("./../middleware/checkAuth.js")
 
+
 router.get("/:nick", function(req, res, next) {
     db.query(`SELECT * FROM lang WHERE lang.nick = '${req.params.nick}'`, (err,lang) => {
-        if(err) {
+        if (err) {
             console.log(err);
             if(err) return next(err)
         } else {
@@ -21,6 +22,8 @@ router.get("/:nick", function(req, res, next) {
         }
     })
 });
+
+
 
 /* Код работы с MongoDB
 
