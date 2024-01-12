@@ -3,10 +3,10 @@ var router = express.Router();
 var db = require('../mySQLConnect.js');
 // var Lang = require("../models/lang").Lang;
 var async = require("async");
-// var checkAuth = require("./../middleware/checkAuth.js")
+var checkAuth = require("./../middleware/checkAuth.js");
 
 
-router.get("/:nick", function(req, res, next) {
+router.get("/:nick", checkAuth, function(req, res, next) {
     db.query(`SELECT * FROM lang WHERE lang.nick = '${req.params.nick}'`, (err,lang) => {
         if (err) {
             console.log(err);

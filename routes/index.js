@@ -5,7 +5,7 @@ var db = require('../mySQLConnect.js');
 //var Lang = require("./../models/lang").Lang;
 //var User = require("./../models/user").User;
 
-/* GET login/registration page. */
+// GET login/registration page.
 router.get('/logreg', function(req, res, next) {
   res.render('logreg', {
     title: "Вход",
@@ -13,20 +13,21 @@ router.get('/logreg', function(req, res, next) {
   });
 });
 
-/* GET home page. */
+// GET home page.
 router.get('/', async (req, res, next) => {
   try {
     req.session.greeting = "Hi!!!";
     res.render('index', {
       title: 'Lang',
-      counter: req.session.counter
+      counter: req.session.counter,
+      user: req.session.user
     });
   } catch (err) {
     next(err);
   }
 });
 
-/* POST login/registration page. */
+// POST login/registration page.
 
 router.post('/logreg', async function(req, res, next) {
   var username = req.body.username;
@@ -54,7 +55,7 @@ router.post('/logreg', async function(req, res, next) {
   });
 });
 
-/* POST logout. */
+// POST logout.
 router.post('/logout', function(req, res, next) {
   req.session.destroy()
   res.locals.user = null
