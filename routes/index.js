@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var Lang = require("./../models/lang").Lang;
-var User = require("./../models/user").User;
+var db = require('../mySQLConnect.js');
+
+//var Lang = require("./../models/lang").Lang;
+//var User = require("./../models/user").User;
 
 /* GET login/registration page. */
 router.get('/logreg', function(req, res, next) {
@@ -14,12 +16,9 @@ router.get('/logreg', function(req, res, next) {
 /* GET home page. */
 router.get('/', async (req, res, next) => {
   try {
-    const menu = await Lang.find({}, { _id: 0, title: 1, nick: 1 });
-    console.log(menu);
     req.session.greeting = "Hi!!!";
     res.render('index', {
       title: 'Lang',
-      menu: menu,
       counter: req.session.counter
     });
   } catch (err) {
@@ -32,24 +31,27 @@ router.get('/', async (req, res, next) => {
 router.post('/logreg', async function(req, res, next) {
   var username = req.body.username;
   var password = req.body.password;
-  try {
-    var user = await User.findOne({ username });
-    if (user) {
-      if (user.checkPassword(password)) {
-        req.session.user = user._id;
+  db.query(`SELECT * FROM user WHERE user.username = '${req.body.username}'`, function(err, users) {
+    if (err) return next(err);
+
+    if (users.length > 0) {
+      var user = users[0];
+
+      if (password == user.password) {
+        req.session.user = user.id;
         res.redirect('/');
       } else {
-        res.render('logreg', { title: 'Вход', error: 'Пароль не верный' });
+        res.render('logreg', { title: 'Вход', error: 'Неверный пароль' });
       }
     } else {
-      const newUser = new User({ username, password });
-      await newUser.save();
-      req.session.user = newUser._id;
-      res.redirect('/');
+      db.query(`INSERT INTO user (username, password) VALUES ('${username}', '${password}')`, function(err, user) {
+        if (err) return next(err);
+
+        req.session.user = user.id;
+        res.redirect('/');
+      });
     }
-} catch (err) {
-    next(err);
-}
+  });
 });
 
 /* POST logout. */
