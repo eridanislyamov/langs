@@ -1,16 +1,36 @@
 var express = require('express');
 var router = express.Router();
-var Lang = require("../models/lang").Lang;
+var db = require('../mySQLConnect.js');
+// var Lang = require("../models/lang").Lang;
 var async = require("async");
-var checkAuth = require("./../middleware/checkAuth.js")
+// var checkAuth = require("./../middleware/checkAuth.js")
 
-/* GET users listing. */
+router.get("/:nick", function(req, res, next) {
+    db.query(`SELECT * FROM lang WHERE lang.nick = '${req.params.nick}'`, (err,lang) => {
+        if(err) {
+            console.log(err);
+            if(err) return next(err)
+        } else {
+            if (lang.length == 0) return next(new Error("Нет такого языка программирования"))
+            var language = lang[0];
+            res.render('lang', {
+                title: language.title,
+                picture: language.avatar,
+                desc: language.about
+            })
+        }
+    })
+});
+
+/* Код работы с MongoDB
+
+// GET users listing. 
 router.get('/', (req, res, next) => {
     res.send('Новый маршрутизатор, для маршрутов, начинающихся с langs');
 });
 
 
-/* Меню + заполение страниц */
+// Меню + заполение страниц
 router.get('/:nick', checkAuth, async function(req, res, next) {
     try {
         const [lang, langs] = await Promise.all([
@@ -37,5 +57,7 @@ function renderCup(res, title, picture, desc, menu) {
         menu: menu
     });
 }
+
+*/
 
 module.exports = router;
